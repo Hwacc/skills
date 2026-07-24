@@ -1,6 +1,8 @@
 ---
 name: dev-conventions
 description: Universal security rules and coding conventions for all AI coding assistants.
+triggers:
+  - always
 ---
 
 # Development Conventions

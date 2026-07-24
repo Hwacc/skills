@@ -1,6 +1,8 @@
 ---
 name: hermes-behavior
 description: Hermes agent behavior rules — auto-archiving, knowledge management, response style.
+triggers:
+  - always
 ---
 
 # Hermes Behavior

@@ -1,6 +1,16 @@
 ---
 name: infra-couchdb
 description: CouchDB and LiveSync infrastructure — setup, connection info, pitfalls.
+triggers:
+  - CouchDB
+  - couchdb
+  - LiveSync
+  - livesync
+  - "5984"
+  - "15984"
+  - sync-daemon
+  - vault-push
+  - obsidian-sync
 ---
 
 # Infrastructure — CouchDB & LiveSync

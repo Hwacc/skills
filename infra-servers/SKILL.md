@@ -1,6 +1,13 @@
 ---
 name: infra-servers
 description: Server inventory and SSH connection information for home infrastructure.
+triggers:
+  - external-server
+  - internal-server
+  - 192.168.5
+  - "38.244.44.19"
+  - "ssh external"
+  - "ssh internal"
 ---
 
 # Infrastructure — Servers

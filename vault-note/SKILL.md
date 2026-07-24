@@ -1,6 +1,11 @@
 ---
 name: vault-note
-description: Read, write, and search notes in the shared Obsidian vault.
+description: Read, write, and search notes in the shared Obsidian vault across all AI tools.
+triggers:
+  - Obsidian
+  - vault
+  - OBSIDIAN_VAULT_PATH
+  - ".md note"
 ---
 
 # Vault Note
