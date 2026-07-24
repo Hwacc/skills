@@ -1,0 +1,30 @@
+---
+name: vault-note
+description: Read, write, and search notes in the shared Obsidian vault.
+---
+
+# Vault Note
+
+Access the shared Obsidian vault for reading and writing knowledge notes.
+
+## Vault Path
+
+`~/Documents/Obsidian Vault/` — set `OBSIDIAN_VAULT_PATH` if different.
+
+## Operations
+
+- **Read**: `read_file` with full path
+- **Search**: `search_files` with `target: "content"` or `target: "files"` + `*.md` glob
+- **Write**: `write_file` with full path
+
+## Directory Convention
+
+- `基础设施/` — Infrastructure & deployment
+- `踩坑记录/` — Bugs & fixes
+- `技术笔记/` — Technical knowledge
+- `项目/` — Project notes
+
+## Rules
+
+- `[[Note Name]]` for cross-references
+- Never include passwords/tokens/keys — use `***`
