@@ -19,6 +19,8 @@ For any non-trivial task — especially system config, infrastructure, debugging
 ## Active Skills
 - vault-note — Read/write/search Obsidian vault notes
 - dev-conventions — Security rules + coding standards (always active)
+<!-- SKILLS:vault-note -->
+<!-- SKILLS:dev-conventions -->
 
 ## Security
 - Never write passwords, tokens, or API keys in any file. Use environment variables.
