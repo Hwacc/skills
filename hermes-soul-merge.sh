@@ -55,16 +55,16 @@ done
 
 if [ -n "$SKILLS_DIR" ]; then
     echo "发现 skills 仓库: $SKILLS_DIR"
-    TABLE=$(python3 -c "
-import os, re, glob
 
-skills_dir = '$SKILLS_DIR'
+    # Generate trigger table from SKILL.md frontmatter
+    TABLE=$(python3 << PYEOF
+import os, glob
+
 rows = ''
-for md in sorted(glob.glob(f'{skills_dir}/*/SKILL.md')):
+for md in sorted(glob.glob('$SKILLS_DIR/*/SKILL.md')):
     name = os.path.basename(os.path.dirname(md))
     with open(md) as f:
         content = f.read()
-    # Parse YAML frontmatter triggers
     triggers = []
     in_triggers = False
     for line in content.split('\n'):
@@ -77,22 +77,25 @@ for md in sorted(glob.glob(f'{skills_dir}/*/SKILL.md')):
             elif line.strip() and not line.startswith(' '):
                 break
     trigger_str = ', '.join(triggers) if triggers else '(no triggers)'
-    rows += f'| {name} | {trigger_str} |\n'
-
+    rows += '| {} | {} |\n'.format(name, trigger_str)
 print(rows.strip())
-" 2>/dev/null)
+PYEOF
+)
 
     if [ -n "$TABLE" ]; then
-        # 替换下载文件中的表（| Skill | Triggers | 之间的内容）
-        python3 -c "
+        # Insert trigger table after the header line
+        python3 << PYEOF
 import re
 content = open('$DL_TMP').read()
-table = '''$TABLE'''
+table = """$TABLE"""
 new_table = '| Skill | Triggers |\n|---|---|\n' + table
-# Replace between table header and next section/EOF
-content = re.sub(r'\| Skill \| Triggers \|[\s\S]*?(?=\n## |\n<!-- |\Z)', '\n' + new_table + '\n', content, count=1)
+content = re.sub(
+    r'\| Skill \| Triggers \|[\s\S]*?(?=\n## |\n<!-- |\Z)',
+    '\n' + new_table + '\n',
+    content, count=1
+)
 open('$DL_TMP', 'w').write(content)
-"
+PYEOF
         echo "触发表已更新"
     fi
 fi
