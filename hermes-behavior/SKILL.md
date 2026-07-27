@@ -3,6 +3,10 @@ name: hermes-behavior
 description: Hermes agent behavior rules — auto-archiving, knowledge management, response style.
 triggers:
   - always
+  - updated
+  - outdated
+  - stale
+  - review
 ---
 
 # Hermes Behavior
@@ -32,6 +36,27 @@ After creating or modifying a skill (with `skill_manage` or by writing to the sk
 3. If the skills repo is local, commit and push the changes
 
 This keeps all Hermes instances in sync with the latest trigger definitions.
+
+## Vault Maintenance
+
+### After major discussions or decisions
+1. Identify the topic domain (e.g., CouchDB, skills, servers)
+2. Search vault for notes mentioning related keywords
+3. If facts have changed, update the note with current information
+4. List updated notes
+
+### After modifying a skill
+1. Run `python3 ~/.hermes/scripts/vault-trace.py <skill-name>` to find affected notes
+2. Load each affected note
+3. Patch outdated sections with current facts
+4. Update the note's `updated` frontmatter date
+
+### Weekly (every Sunday)
+1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
+2. Load the relevant skill for each note's domain (from `skill_deps` frontmatter)
+3. Verify factual claims against current reality
+4. Update outdated content
+5. List all changes in a summary note at `基础设施/周维护报告.md`
 
 ## Security
 
