@@ -14,9 +14,9 @@ Access the shared Obsidian vault for reading and writing knowledge notes.
 
 ## Vault Path
 
-Read from `OBSIDIAN_VAULT_PATH` env var. Set it in `~/.hermes/.env`:
+Read from `OBSIDIAN_VAULT_PATH` env var. Default paths:
 - macOS/Linux: `~/Documents/Obsidian Vault/`
-- Windows: `C:/Users/用户名/Documents/Obsidian Vault/`
+- Windows: `%USERPROFILE%/Documents/Obsidian Vault/`
 
 Resolve the env var before passing to file tools — they don't expand shell variables.
 
