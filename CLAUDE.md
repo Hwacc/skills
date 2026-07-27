@@ -1,19 +1,27 @@
-# Claude Code Global Knowledge (from github.com/Hwacc/skills)
+# Claude Code Global Knowledge
 
-<!-- MERGE: keep this base, append your local additions below -->
+## Vault Workflow (mandatory)
+
+For any non-trivial task — especially system config, infrastructure, debugging, or architectural decisions:
+
+1. **Search before acting** — search the vault for relevant past notes before starting
+2. **Act with context** — apply existing knowledge, avoid repeating mistakes
+3. **Write after completing** — save a summary to `基础设施/` or `踩坑记录/`
+
+> This mirrors Hermes's `hermes-behavior` auto-archive pattern. The vault is your long-term memory across sessions and agents.
 
 ## Obsidian Vault
 - Path: `~/Documents/Obsidian Vault/` (set `OBSIDIAN_VAULT_PATH` if different)
-- Read notes: use `read_file` with full path
-- Search notes: use `search_files` or `grep` in the vault directory
-- Write notes: use `write_file`, notes go under `基础设施/`, `踩坑记录/`, `技术笔记/`
+- Read: `read_file`, Search: `search_files` or `grep` in vault directory, Write: `write_file`
+- Directories: `基础设施/` (infra), `踩坑记录/` (bugs), `技术笔记/` (tech), `项目/` (projects)
+- Cross-reference with `[[Note Name]]`
 
-<!-- SKILLS:vault-note -->
-<!-- SKILLS:dev-conventions -->
+## Active Skills
+- vault-note — Read/write/search Obsidian vault notes
+- dev-conventions — Security rules + coding standards (always active)
 
-## Universal Rules
+## Security
 - Never write passwords, tokens, or API keys in any file. Use environment variables.
 - Public services must use HTTPS + multi-layer authentication.
-- After completing a complex task, write a summary to the vault.
 
 <!-- LOCAL: add machine-specific rules below this line -->
