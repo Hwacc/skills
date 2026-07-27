@@ -32,8 +32,9 @@ List written notes after each batch. Do NOT wait for the user to ask.
 After creating or modifying a skill (with `skill_manage` or by writing to the skills repo):
 
 1. Ensure the skill has `triggers:` in its frontmatter
-2. Run `bash hermes-soul-merge.sh` to regenerate the SOUL.md trigger table
-3. If the skills repo is local, commit and push the changes
+2. Update `HERMES-SOUL.md` trigger table in the repo, commit and push
+3. Run `bash hermes-soul-merge.sh` to sync the updated SOUL.md to local
+4. Run `hermes skills update` to pull the new/updated skill from the tap
 
 This keeps all Hermes instances in sync with the latest trigger definitions.
 
@@ -46,7 +47,8 @@ This keeps all Hermes instances in sync with the latest trigger definitions.
 4. List updated notes
 
 ### After modifying a skill
-1. Run `python3 ~/.hermes/scripts/vault-trace.py <skill-name>` to find affected notes
+1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py <skill-name>` to find affected notes
+   - `<skills-dir>` = `$LOCALAPPDATA/hermes/skills` (Windows) or `~/.hermes/skills` (macOS/Linux)
 2. Load each affected note
 3. Patch outdated sections with current facts
 4. Update the note's `updated` frontmatter date
