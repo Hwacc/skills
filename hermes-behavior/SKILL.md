@@ -11,6 +11,18 @@ triggers:
 
 # Hermes Behavior
 
+## Setup
+
+The tap only syncs `SKILL.md`. After first install, copy the trace script manually:
+
+```bash
+# One-time setup
+mkdir -p <skills-dir>/hermes-behavior/scripts
+cp <repo>/hermes-behavior/scripts/vault-trace.py <skills-dir>/hermes-behavior/scripts/
+```
+
+Or use `write_file` to create it from the source at `hermes-behavior/scripts/vault-trace.py` in the Hwacc/skills repo.
+
 ## Auto-Archive to Obsidian Vault
 
 After completing a task, **automatically** write a summary note:
