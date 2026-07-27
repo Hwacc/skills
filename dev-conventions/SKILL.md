@@ -7,6 +7,16 @@ triggers:
 
 # Development Conventions
 
+## Vault Workflow (mandatory)
+
+For any non-trivial task — especially system config, infrastructure, debugging, or architectural decisions:
+
+1. **Search before acting** — search `~/Documents/Obsidian Vault/` for relevant past notes
+2. **Act with context** — apply existing knowledge, avoid repeating mistakes
+3. **Write after completing** — save a summary to `基础设施/` or `踩坑记录/`
+
+> The vault is shared long-term memory across all agents (Hermes, Claude Code, Cursor). Use it.
+
 ## Security
 
 - **Never** write passwords, tokens, or API keys in files. Use environment variables.
