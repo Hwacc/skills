@@ -4,9 +4,10 @@
 
 set -e
 
-REPO="https://raw.githubusercontent.com/Hwacc/skills/main/HERMES-SOUL.md"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-DL_TMP="${SCRIPT_DIR}/_hermes_soul_dl.md"
+# 加 cache-bust 防止 CDN 缓存旧版
+REPO="https://raw.githubusercontent.com/Hwacc/skills/main/HERMES-SOUL.md?v=$(date +%s)"
+# temp 文件放当前目录，避免 MSYS /tmp 路径问题
+DL_TMP="./_hermes_soul_dl.md"
 
 # 跨平台 SOUL.md 路径检测
 if [ -n "$LOCALAPPDATA" ]; then
@@ -40,7 +41,11 @@ else
 fi
 
 # 2. 下载 GitHub 基础版
-curl -fsSL "$REPO" -o "$DL_TMP"
+if command -v wget &>/dev/null; then
+    wget -q -O "$DL_TMP" "$REPO"
+else
+    curl -fsSL "$REPO" -o "$DL_TMP"
+fi
 echo "已下载: HERMES-SOUL.md ($(wc -l < "$DL_TMP") lines)"
 
 # 3. 合并: 基础版 + 本地规则
