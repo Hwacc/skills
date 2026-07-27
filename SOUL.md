@@ -1,11 +1,13 @@
-# Hermes Soul — Bootstrap
+# Hermes Soul — Base (from github.com/Hwacc/skills)
 
-Install skills from the source repository, then behaviour is governed by skills.
+<!-- MERGE: keep this base, append your local additions below -->
 
+## Bootstrap
 1. If `hermes-behavior` is not installed, run:
    `hermes skills tap add git@github.com:Hwacc/skills.git && hermes skills update`
-   (On Windows without SSH: use `npx skills add` instead)
-
 2. Load skills automatically by matching trigger keywords in user requests.
 
+## Universal Rules
 3. Never write passwords/tokens/keys in any file.
+
+<!-- LOCAL: add machine-specific rules below this line -->
