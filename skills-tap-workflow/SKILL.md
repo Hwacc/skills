@@ -1,6 +1,6 @@
 ---
 name: skills-tap-workflow
-description: Hwacc/skills 个人 tap 仓库的完整使用和维护链路——触发→安装→使用 + 修改→推送→合并。
+description: Full lifecycle of the Hwacc/skills personal tap — trigger→install→use, plus maintain→push→merge.
 triggers:
   - skills tap
   - tap workflow
@@ -8,14 +8,14 @@ triggers:
   - hermes-soul-merge
 ---
 
-# Skills Tap 工作流
+# Skills Tap Workflow
 
-## 仓库结构
+## Repo Structure
 
 ```
 Hwacc/skills/
-├── HERMES-SOUL.md          # SOUL 基础模板（分发给所有 Hermes 实例）
-├── hermes-soul-merge.sh    # 本地合并脚本（拉取上游 + 保留本地规则）
+├── HERMES-SOUL.md          # SOUL base template (distributed to all Hermes instances)
+├── hermes-soul-merge.sh    # Local merge script (pull upstream + preserve local rules)
 ├── dev-conventions/        # SKILL.md
 ├── hermes-behavior/        # SKILL.md
 ├── infra-couchdb/          # SKILL.md
@@ -24,46 +24,49 @@ Hwacc/skills/
 └── skills-tap-workflow/    # SKILL.md
 ```
 
-## 核心链路：触发 → 安装 → 使用
+## Core Chain: Trigger → Install → Use
 
 ```
-用户输入含关键词
+User input with keyword
        │
        ▼
-SOUL.md 触发表匹配 skill 名
+SOUL.md trigger table matches skill name
        │
        ▼
-skills_list 检查是否已安装
+skills_list checks if installed
        │
    ┌───┴───┐
-  已安装   未安装
+  Yes      No
    │       │
    ▼       ▼
-直接加载  ① search --source github
-          │
-      ┌───┴───┐
-     成功    超时/无结果
-      │       │
-      ▼       ▼
-   安装     ② GITHUB_TOKEN 重试
-              │
-          ┌───┴───┐
-         成功    仍失败
-          │       │
-          ▼       ▼
-       安装     ③ fallback: direct install
-                  │
-                  ▼
-               skill_view → 执行
+Load      ① search --source github
+directly    │
+        ┌───┴───┐
+       OK      Timeout/no results
+        │       │
+        ▼       ▼
+     Install  ② GITHUB_TOKEN retry
+                 │
+             ┌───┴───┐
+            OK      Still fail
+             │       │
+             ▼       ▼
+          Install  ③ fallback: direct install
+                       │
+                       ▼
+                    skill_view → execute
 ```
 
-## 维护链路
+**Key design**: Step ③ fallback bypasses GitHub search API entirely,
+constructing install path as `skills-sh/Hwacc/skills/<name>`. Zero-blocking.
+
+## Maintenance Chain
 
 ```
-修改 GitHub → push → bash hermes-soul-merge.sh → 本地 SOUL.md 更新
+Modify GitHub → git push → bash hermes-soul-merge.sh → local SOUL.md updated
 ```
 
-## 新机器初始化
+## New Machine Bootstrap
 
 ```bash
 hermes skills tap add Hwacc/skills

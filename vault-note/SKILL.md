@@ -33,7 +33,10 @@ Resolve the env var before passing to file tools — they don't expand shell var
 - `技术笔记/` — Technical knowledge
 - `项目/` — Project notes
 
-## Rules
+## Language Convention
+
+Skills (SKILL.md) → **English** (reader is AI, more precise, fewer tokens)
+Vault notes (.md in Obsidian) → **中文** (reader is human, user's native language)
 
 - `[[Note Name]]` for cross-references
 - Never include passwords/tokens/keys — use `***`
