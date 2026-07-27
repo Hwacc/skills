@@ -23,6 +23,16 @@ List written notes after each batch. Do NOT wait for the user to ask.
 1. Obsidian vault — for all persistent knowledge
 2. Memory tool — only for user preferences and connection info
 
+## Skill Lifecycle
+
+After creating or modifying a skill (with `skill_manage` or by writing to the skills repo):
+
+1. Ensure the skill has `triggers:` in its frontmatter
+2. Run `bash hermes-soul-merge.sh` to regenerate the SOUL.md trigger table
+3. If the skills repo is local, commit and push the changes
+
+This keeps all Hermes instances in sync with the latest trigger definitions.
+
 ## Security
 
 - Never write passwords/tokens/keys in notes — use `***`

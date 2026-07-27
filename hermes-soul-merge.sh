@@ -1,17 +1,14 @@
 #!/bin/bash
-# Hermes SOUL merge — 从 GitHub 拉取基础版并合并本地规则
+# Hermes SOUL merge — 从 GitHub 拉取基础版、扫描本地 skills 更新触发表、合并本地规则
 # 用法: bash hermes-soul-merge.sh
 
 set -e
 
-# 加 cache-bust 防止 CDN 缓存旧版
 REPO="https://raw.githubusercontent.com/Hwacc/skills/main/HERMES-SOUL.md?v=$(date +%s)"
-# temp 文件放当前目录，避免 MSYS /tmp 路径问题
 DL_TMP="./_hermes_soul_dl.md"
 
 # 跨平台 SOUL.md 路径检测
 if [ -n "$LOCALAPPDATA" ]; then
-    # Windows (git-bash): %LOCALAPPDATA%/hermes/SOUL.md
     HERMES_DIR="${LOCALAPPDATA}/hermes"
 elif [ -n "$APPDATA" ]; then
     HERMES_DIR="${APPDATA}/hermes"
@@ -28,14 +25,13 @@ LOCAL_MARKER='<!-- LOCAL: add machine-specific rules below this line -->'
 echo "=== Hermes SOUL Merge ==="
 echo "Hermes dir: $HERMES_DIR"
 
-# 1. 备份本地唯一规则 (LOCAL marker 之后的所有内容)
+# 1. 备份本地唯一规则
 if [ -f "$LOCAL" ]; then
     awk -v marker="$LOCAL_MARKER" '
         $0 == marker {found=1; next}
         found {print}
     ' "$LOCAL" > "$LOCAL_KEEP" 2>/dev/null || true
-    local_lines=$(wc -l < "$LOCAL_KEEP" 2>/dev/null || echo 0)
-    echo "本地规则已备份: $LOCAL_KEEP ($local_lines lines)"
+    echo "本地规则已备份: $LOCAL_KEEP ($(wc -l < "$LOCAL_KEEP" 2>/dev/null || echo 0) lines)"
 else
     echo "(本地无 SOUL.md，将新建)"
 fi
@@ -48,7 +44,60 @@ else
 fi
 echo "已下载: HERMES-SOUL.md ($(wc -l < "$DL_TMP") lines)"
 
-# 3. 合并: 基础版 + 本地规则
+# 3. 扫描本地 skills 仓库，重建触发表
+SKILLS_DIR=""
+for d in "./skills" "$HOME/skills" "$HOME/workspace/skills" "$HERMES_DIR/skills"; do
+    if [ -d "$d" ] && compgen -G "$d/*/SKILL.md" > /dev/null 2>&1; then
+        SKILLS_DIR="$d"
+        break
+    fi
+done
+
+if [ -n "$SKILLS_DIR" ]; then
+    echo "发现 skills 仓库: $SKILLS_DIR"
+    TABLE=$(python3 -c "
+import os, re, glob
+
+skills_dir = '$SKILLS_DIR'
+rows = ''
+for md in sorted(glob.glob(f'{skills_dir}/*/SKILL.md')):
+    name = os.path.basename(os.path.dirname(md))
+    with open(md) as f:
+        content = f.read()
+    # Parse YAML frontmatter triggers
+    triggers = []
+    in_triggers = False
+    for line in content.split('\n'):
+        if line.strip() == 'triggers:':
+            in_triggers = True
+            continue
+        if in_triggers:
+            if line.startswith('  - '):
+                triggers.append(line.strip()[2:].strip('"'))
+            elif line.strip() and not line.startswith(' '):
+                break
+    trigger_str = ', '.join(triggers) if triggers else '(no triggers)'
+    rows += f'| {name} | {trigger_str} |\n'
+
+print(rows.strip())
+" 2>/dev/null)
+
+    if [ -n "$TABLE" ]; then
+        # 替换下载文件中的表（| Skill | Triggers | 之间的内容）
+        python3 -c "
+import re
+content = open('$DL_TMP').read()
+table = '''$TABLE'''
+new_table = '| Skill | Triggers |\n|---|---|\n' + table
+# Replace between table header and next section/EOF
+content = re.sub(r'\| Skill \| Triggers \|[\s\S]*?(?=\n## |\n<!-- |\Z)', '\n' + new_table + '\n', content, count=1)
+open('$DL_TMP', 'w').write(content)
+"
+        echo "触发表已更新"
+    fi
+fi
+
+# 4. 合并: 基础版 + 本地规则
 cat "$DL_TMP" > "$LOCAL"
 if [ -f "$LOCAL_KEEP" ] && [ -s "$LOCAL_KEEP" ]; then
     echo "" >> "$LOCAL"
