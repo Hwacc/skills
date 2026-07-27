@@ -21,6 +21,7 @@
 | `infra-couchdb` | CouchDB, couchdb, LiveSync, livesync, 5984, 15984, sync-daemon, vault-push, obsidian-sync |
 | `infra-servers` | external-server, internal-server, 192.168.5, 38.244.44.19, "ssh external", "ssh internal" |
 | `vault-note` | Obsidian, vault, OBSIDIAN_VAULT_PATH, ".md note" |
+| `skills-tap-workflow` | skills tap, tap workflow, "更新 skill 仓库", hermes-soul-merge |
 
 **Auto-discovery chain (execute in order when a trigger matches):**
 
