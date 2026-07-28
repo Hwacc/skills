@@ -38,14 +38,7 @@ for skill in "${SKILLS_LIST[@]}"; do
     has_link=false
 
     [ -f "$AGENTS_DIR/$skill/SKILL.md" ] && has_npx=true
-    # Valid link: symlink AND target SKILL.md exists
-    if [ -L "$CURSOR_DIR/$skill" ] && [ -f "$CURSOR_DIR/$skill/SKILL.md" ]; then
-        has_link=true
-    fi
-    # Also flag non-symlink directories as needing relink
-    if [ -d "$CURSOR_DIR/$skill" ] && [ ! -L "$CURSOR_DIR/$skill" ]; then
-        has_link=false
-    fi
+    [ -f "$CURSOR_DIR/$skill/SKILL.md" ] && has_link=true
 
     if $has_npx && $has_link; then
         INSTALLED="$INSTALLED $skill"
@@ -77,15 +70,12 @@ for skill in ${SKILLS_LIST[@]}; do
     fi
 done
 
-# 4. 软链接
+# 4. 同步到 Cursor skills 目录（Windows 不支持 symlink，直接用 cp）
 for skill in ${SKILLS_LIST[@]}; do
     if [ -d "$AGENTS_DIR/$skill" ]; then
-        # Remove existing non-symlink directory first
-        if [ -d "$CURSOR_DIR/$skill" ] && [ ! -L "$CURSOR_DIR/$skill" ]; then
-            rm -rf "$CURSOR_DIR/$skill"
-        fi
-        ln -sf "$AGENTS_DIR/$skill" "$CURSOR_DIR/$skill"
-        echo "  已链接: $skill"
+        rm -rf "$CURSOR_DIR/$skill"
+        cp -r "$AGENTS_DIR/$skill" "$CURSOR_DIR/$skill"
+        echo "  已同步: $skill → Cursor"
     else
         echo "  ⚠ $skill: npx 源不存在"
     fi
