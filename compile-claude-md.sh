@@ -7,6 +7,8 @@
 
 set -e
 
+DIR="$(pwd)"
+
 # Cross-platform Python
 _python() {
     python3 "$@" 2>/dev/null || python "$@"
@@ -98,6 +100,13 @@ else
         echo "  → 全部已就绪，无需安装"
     fi
 fi
+
+# 3.5 同步最新 SKILL.md（npx 可能安装缓存旧版）
+for skill in $EXPECTED_SKILLS; do
+    if [ -f "$DIR/$skill/SKILL.md" ] && [ -d "$SKILLS_DIR/$skill" ]; then
+        cp "$DIR/$skill/SKILL.md" "$SKILLS_DIR/$skill/SKILL.md"
+    fi
+done
 
 # 4. 合并: 基础版 + 本地规则
 cp "$DL_TMP" "$LOCAL"
