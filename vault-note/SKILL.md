@@ -65,7 +65,7 @@ Agent sets `stale_after` based on content type:
 | Bug fix, pitfall record | omit | Historical record, never "expires" |
 | Tech research, solution analysis | +1 month | Tech stacks evolve |
 
-After writing a note, update MOC with `python index.py`.
+After writing a note, update MOC with `python <repo>/hermes-behavior/scripts/index.py` (script is in the Hwacc/skills repo clone).
 
 ## Rules
 

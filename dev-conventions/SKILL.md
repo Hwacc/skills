@@ -36,14 +36,14 @@ Directories may change — the MOC is the single source of truth.
 Update `MOC.md`:
 1. Add the new note as a wikilink under the appropriate category
 2. Use format: `- [[Note Name]] — short description`
-3. Run `python index.py` to regenerate MOC with stale markers
+3. Run `python <repo>/hermes-behavior/scripts/index.py` to regenerate MOC (index.py is in the Hwacc/skills repo, not in the skills directory)
 
 ### On session start
 
 1. Read `MOC.md` — scan for ⚠️ markers
 2. If stale notes found, tell the user: "N 篇笔记需要审查，要我看看吗？"
 3. Wait for user confirmation before reviewing
-4. After reviewing, run `python index.py` to regenerate MOC
+4. After reviewing, run `python <repo>/hermes-behavior/scripts/index.py` to regenerate MOC
 
 ### After major discussions or decisions
 
