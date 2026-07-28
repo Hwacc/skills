@@ -32,6 +32,9 @@ After completing a task, **automatically** write a summary note:
 - Important technical decision → note with rationale
 - Newly learned technique/workflow → `技术笔记/`
 
+To find the right directory, read `MOC.md` → `分类目录` section first.
+Directories may change — the MOC is the single source of truth.
+
 List written notes after each batch. Do NOT wait for the user to ask.
 
 ### After writing new vault notes

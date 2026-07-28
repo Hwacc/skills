@@ -31,10 +31,9 @@ Resolve the env var before passing to file tools — they don't expand shell var
 
 ## Directory Convention
 
-- `基础设施/` — Infrastructure & deployment
-- `踩坑记录/` — Bugs & fixes
-- `技术笔记/` — Technical knowledge
-- `项目/` — Project notes
+Read `MOC.md` → `分类目录` section for the current directory list and their purposes.
+This is the single source of truth — directories may change over time.
+Agent picks the best-matching directory based on note content.
 
 ## Language Convention
 

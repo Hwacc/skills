@@ -25,7 +25,7 @@ After working on the Hwacc/skills repository (any file: scripts, markdown, shell
 ## Obsidian Vault
 - Path: `~/Documents/Obsidian Vault/` (set `OBSIDIAN_VAULT_PATH` if different)
 - Read: `read_file`, Search: `search_files` or `grep` in vault directory, Write: `write_file`
-- Directories: `基础设施/` (infra), `踩坑记录/` (bugs), `技术笔记/` (tech), `项目/` (projects)
+- **Directories**: Read `MOC.md` → `分类目录` section — this is the single source of truth, may change
 - Cross-reference with `[[Note Name]]`
 
 ## Active Skills
