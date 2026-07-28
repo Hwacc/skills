@@ -1,9 +1,6 @@
 #!/bin/bash
-# Cursor 自举：从 CLAUDE.md 读取需要的 skills，npx 安装 + 软链接桥接
+# Cursor 自举：从 CLAUDE.md 读取需要的 skills，npx 安装 + 软链接桥接 + 全局规则
 # 用法: bash compile-cursor-skills.sh
-#
-# Skills 列表统一从 CLAUDE.md 的 <!-- SKILLS:xxx --> 标记读取，
-# 与 compile-claude-md.sh 保持同步，无需单独维护。
 
 set -e
 
@@ -13,10 +10,9 @@ CURSOR_DIR="$HOME/.cursor/skills-cursor"
 
 echo "=== Cursor Skills 自举 ==="
 
-# 确保目录存在
 mkdir -p "$AGENTS_DIR" "$CURSOR_DIR"
 
-# 0. 从 CLAUDE.md 读取 skills 列表（与 Claude Code 共享同一份定义）
+# 0. 从 CLAUDE.md 读取 skills 列表
 if [ ! -f "$CLAUDE_MD" ]; then
     echo "⚠ CLAUDE.md 不存在，请先运行 compile-claude-md.sh"
     exit 1
@@ -31,7 +27,7 @@ fi
 
 echo "Skills (from CLAUDE.md): ${SKILLS_LIST[*]}"
 
-# 1. 检查哪些 skills 缺失
+# 1. 检查缺失
 MISSING_NPX=""
 MISSING_LINK=""
 INSTALLED=""
@@ -55,7 +51,7 @@ done
 [ -n "$MISSING_NPX" ] && echo "  ⬜ 需 npx 安装:$MISSING_NPX"
 [ -n "$MISSING_LINK" ]&& echo "  ⬜ 需软链接:$MISSING_LINK"
 
-# 2. npx 安装缺失的
+# 2. npx 安装
 if [ -n "$MISSING_NPX" ] && command -v npx &>/dev/null; then
     SKILL_ARGS=""
     for skill in $MISSING_NPX; do
@@ -65,7 +61,7 @@ if [ -n "$MISSING_NPX" ] && command -v npx &>/dev/null; then
     npx skills add Hwacc/skills -a cursor -g $SKILL_ARGS -y 2>&1 | grep -E "✓|Done" || true
 fi
 
-# 3. 软链接缺失的
+# 3. 软链接
 if [ -n "$MISSING_LINK" ]; then
     for skill in $MISSING_LINK; do
         if [ -d "$AGENTS_DIR/$skill" ]; then
@@ -89,3 +85,42 @@ for skill in "${SKILLS_LIST[@]}"; do
     fi
 done
 echo "━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 5. 写入 Cursor 全局规则（MOC-first）
+RULES_DIR="$HOME/.cursor/rules"
+mkdir -p "$RULES_DIR"
+
+cat > "$RULES_DIR/vault.mdc" << 'EOF'
+---
+description: Vault workflow — always check MOC before reading notes
+globs: **/*.md
+alwaysApply: true
+---
+
+## Vault Knowledge Base
+
+Obsidian vault is the shared knowledge source. All agents read from the same vault.
+
+### MOC-First Rule (MANDATORY)
+
+Before reading ANY vault file, read the MOC index first:
+
+```
+read_file("~/Documents/Obsidian Vault/MOC.md")
+```
+
+The MOC contains a curated index of all vault notes organized by topic. Use its `[[wikilinks]]` to navigate to specific notes.
+
+### Reading Notes
+- Path: `~/Documents/Obsidian Vault/`
+- Directories: `基础设施/`, `踩坑记录/`, `技术笔记/`, `项目/`
+- Cross-reference with `[[Note Name]]`
+
+### Writing Notes
+- After complex tasks, write a summary to the vault
+- Use the MOC's `分类目录` section to pick the right directory
+- Update MOC.md after adding new notes
+EOF
+
+echo "Cursor 规则已写入: $RULES_DIR/vault.mdc"
+echo "Done → MOC-first rule active for Cursor"
