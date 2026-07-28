@@ -2,11 +2,13 @@
 
 ## Vault Workflow (mandatory)
 
-For any non-trivial task — especially system config, infrastructure, debugging, or architectural decisions:
+**Trigger** — run this workflow when a task involves ANY of: system config, infrastructure, debugging, architecture decisions, or 3rd-party integration — OR is expected to take more than ~15 min. Skip only for trivial one-off edits.
 
-1. **Search before acting** — search the vault for relevant past notes before starting
-2. **Act with context** — apply existing knowledge, avoid repeating mistakes
-3. **Write after completing** — save a summary to `基础设施/` or `踩坑记录/`
+1. **Search before acting** — search the vault for relevant past notes BEFORE writing code
+2. **Act with context** — apply existing knowledge, avoid repeating past mistakes
+3. **Write after completing** — save a summary to `基础设施/`, `踩坑记录/`, `技术笔记/`, or `项目/`
+
+Do NOT skip step 1 or step 3.
 
 > This mirrors Hermes's `hermes-behavior` auto-archive pattern. The vault is your long-term memory across sessions and agents.
 
