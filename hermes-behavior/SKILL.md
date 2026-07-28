@@ -34,6 +34,11 @@ After completing a task, **automatically** write a summary note:
 
 List written notes after each batch. Do NOT wait for the user to ask.
 
+### After writing new vault notes
+Update `知识库 MOC.md`:
+1. Add the new note as a wikilink under the appropriate category
+2. Use the format: `- [[Note Name]] — short description`
+
 ## Knowledge Priority
 
 1. Obsidian vault — for all persistent knowledge
