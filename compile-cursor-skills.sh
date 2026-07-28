@@ -38,7 +38,14 @@ for skill in "${SKILLS_LIST[@]}"; do
     has_link=false
 
     [ -f "$AGENTS_DIR/$skill/SKILL.md" ] && has_npx=true
-    [ -L "$CURSOR_DIR/$skill" ] && [ -f "$CURSOR_DIR/$skill/SKILL.md" ] && has_link=true
+    # Valid link: symlink AND target SKILL.md exists
+    if [ -L "$CURSOR_DIR/$skill" ] && [ -f "$CURSOR_DIR/$skill/SKILL.md" ]; then
+        has_link=true
+    fi
+    # Also flag non-symlink directories as needing relink
+    if [ -d "$CURSOR_DIR/$skill" ] && [ ! -L "$CURSOR_DIR/$skill" ]; then
+        has_link=false
+    fi
 
     if $has_npx && $has_link; then
         INSTALLED="$INSTALLED $skill"
@@ -71,16 +78,18 @@ for skill in ${SKILLS_LIST[@]}; do
 done
 
 # 4. 软链接
-if [ -n "$MISSING_LINK" ]; then
-    for skill in $MISSING_LINK; do
-        if [ -d "$AGENTS_DIR/$skill" ]; then
-            ln -sf "$AGENTS_DIR/$skill" "$CURSOR_DIR/$skill"
-            echo "  已链接: $skill"
-        else
-            echo "  ⚠ $skill: npx 源不存在，跳过硬链接"
+for skill in ${SKILLS_LIST[@]}; do
+    if [ -d "$AGENTS_DIR/$skill" ]; then
+        # Remove existing non-symlink directory first
+        if [ -d "$CURSOR_DIR/$skill" ] && [ ! -L "$CURSOR_DIR/$skill" ]; then
+            rm -rf "$CURSOR_DIR/$skill"
         fi
-    done
-fi
+        ln -sf "$AGENTS_DIR/$skill" "$CURSOR_DIR/$skill"
+        echo "  已链接: $skill"
+    else
+        echo "  ⚠ $skill: npx 源不存在"
+    fi
+done
 
 # 5. 最终确认
 echo ""
