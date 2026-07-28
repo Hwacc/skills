@@ -4,6 +4,7 @@
 
 set -e
 
+DIR="$(pwd)"
 CLAUDE_MD="$HOME/.claude/CLAUDE.md"
 AGENTS_DIR="$HOME/.agents/skills"
 CURSOR_DIR="$HOME/.cursor/skills-cursor"
@@ -59,9 +60,17 @@ if [ -n "$MISSING_NPX" ] && command -v npx &>/dev/null; then
     done
     echo "npx 安装中..."
     npx skills add Hwacc/skills -a cursor -g $SKILL_ARGS -y 2>&1 | grep -E "✓|Done" || true
+    
 fi
 
-# 3. 软链接
+# 3. 同步最新 SKILL.md（npx 可能安装缓存旧版）
+for skill in ${SKILLS_LIST[@]}; do
+    if [ -f "$DIR/$skill/SKILL.md" ] && [ -d "$AGENTS_DIR/$skill" ]; then
+        cp "$DIR/$skill/SKILL.md" "$AGENTS_DIR/$skill/SKILL.md"
+    fi
+done
+
+# 4. 软链接
 if [ -n "$MISSING_LINK" ]; then
     for skill in $MISSING_LINK; do
         if [ -d "$AGENTS_DIR/$skill" ]; then
@@ -73,7 +82,7 @@ if [ -n "$MISSING_LINK" ]; then
     done
 fi
 
-# 4. 最终确认
+# 5. 最终确认
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Cursor skills:"
@@ -86,7 +95,7 @@ for skill in "${SKILLS_LIST[@]}"; do
 done
 echo "━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# 5. 写入 Cursor 全局规则（MOC-first + 数据保护）
+# 6. 写入 Cursor 全局规则（MOC-first + 数据保护）
 if [ -n "$APPDATA" ]; then
     RULES_DIR="$APPDATA/Cursor/rules"
 else
