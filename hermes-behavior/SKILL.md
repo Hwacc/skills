@@ -65,12 +65,16 @@ This keeps all Hermes instances in sync with the latest trigger definitions.
 3. Patch outdated sections with current facts
 4. Update the note's `updated` frontmatter date
 
-### After modifying any repo file (scripts, configs, CLAUDE.md, etc.)
-1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py vault-note skills-tap-workflow hermes-behavior` to find ALL affected notes
+### Vault note maintenance after repo work
+
+After working on the Hwacc/skills repository (any file — shell scripts, markdown, configs):
+
+1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py vault-note skills-tap-workflow hermes-behavior` to find affected notes
+   - `<skills-dir>` = `$LOCALAPPDATA/hermes/skills` (Windows) or `~/.hermes/skills` (macOS/Linux)
 2. Load each affected note
-3. Check if facts have changed — if yes, patch outdated sections
+3. If facts have changed, patch outdated sections
 4. Update the note's `updated` frontmatter date
-5. This is a checkpoint; do NOT skip it even if the task felt like "just script changes"
+5. This is a checkpoint; do NOT skip it — repo changes often invalidate related vault notes
 
 ### Weekly (every Sunday)
 1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
