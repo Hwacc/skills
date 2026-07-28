@@ -102,6 +102,7 @@ def trace(skill_name, vault):
 
 if __name__ == "__main__":
     check_stale = "--stale" in sys.argv
+    check_block = "--block" in sys.argv
     all_skills = "--all" in sys.argv
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
 
@@ -110,7 +111,7 @@ if __name__ == "__main__":
     elif len(args) == 1:
         skill_list = [args[0]]
     else:
-        print("Usage: python vault-trace.py <skill-name> [--stale]")
+        print("Usage: python vault-trace.py <skill-name> [--stale] [--block]")
         print("       python vault-trace.py --all --stale")
         sys.exit(1)
 
@@ -141,7 +142,11 @@ if __name__ == "__main__":
                 print(f"No notes depend on '{skill}'")
 
     if check_stale and stale_found:
-        print("\n⚠ Some vault notes are outdated. Update them before pushing.")
-        sys.exit(1)
+        if check_block:
+            print("\n⛔ Push blocked: vault notes are outdated.")
+            sys.exit(1)
+        else:
+            print("\n⚠ Some vault notes are outdated. Review before pushing.")
+            print("   Use --block to enforce blocking.")
     elif check_stale:
         print("✅ All vault notes up to date.")

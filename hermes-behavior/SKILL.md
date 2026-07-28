@@ -87,7 +87,12 @@ After working on the Hwacc/skills repository (any file — shell scripts, markdo
 
 ### Pre-push hook
 
-`scripts/pre-push` runs `vault-trace.py --all --stale` before `git push`. If any vault note is >24h outdated, the push is blocked. Install via `install-all.sh`.
+`scripts/pre-push` runs before `git push`:
+- Scans only skills **changed in this push** (`git diff origin/main..HEAD`)
+- Runs `vault-trace.py <skill> --stale` (warning only, exit 0)
+- Use `vault-trace.py --stale --block` to enforce blocking
+
+Install via `install-all.sh` (`ln -sf scripts/pre-push .git/hooks/pre-push`).
 
 ### Weekly (every Sunday)
 1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
