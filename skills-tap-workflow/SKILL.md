@@ -4,10 +4,18 @@ description: Full lifecycle of the Hwacc/skills personal tap — trigger→insta
 triggers:
   - skills tap
   - tap workflow
-  - "更新 skill 仓库"
+  - "更新 skill"
   - "更新 skills"
+  - "更新我的 skill"
   - "更新我的 skills"
-  - "更新我的skill"
+  - "更新技能"
+  - "更新我的技能"
+  - "更新 skill 仓库"
+  - "更新技能仓库"
+  - "同步 skill"
+  - "同步 skills"
+  - "拉取 skill"
+  - "拉取 skills"
   - hermes-soul-merge
 ---
 
@@ -73,7 +81,8 @@ Modify GitHub → git push → bash hermes-soul-merge.sh → local SOUL.md updat
 
 When the user says "更新下我的 skills" or similar:
 
-1. **Pull the repo**: `cd C:\my-workspace\Hwacc-skills && git pull origin main`
+1. **Pull the repo**: `cd <repo-dir> && git pull origin main`
+   - `<repo-dir>` = `~/my-workspace/Hwacc-skills` (cross-platform; adjust if cloned elsewhere)
 2. **Run install-all**: `bash scripts/install-all.sh`
 3. **Verify all agents**:
    - Hermes: check `hermes skills list` shows 6 tap skills (SAFE verdict)
@@ -81,7 +90,6 @@ When the user says "更新下我的 skills" or similar:
    - Cursor: check `~/.cursor/skills-cursor/` has dev-conventions + vault-note
 
 Do NOT just run `hermes skills update` alone — that only covers Hermes.
-The repo is at `C:\my-workspace\Hwacc-skills` (Windows).
 
 ## New Machine Bootstrap
 
