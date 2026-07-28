@@ -11,18 +11,6 @@ triggers:
 
 # Hermes Behavior
 
-## Setup
-
-The tap only syncs `SKILL.md`. After first install, copy the trace script manually:
-
-```bash
-# One-time setup
-mkdir -p <skills-dir>/hermes-behavior/scripts
-cp <repo>/hermes-behavior/scripts/vault-trace.py <skills-dir>/hermes-behavior/scripts/
-```
-
-Or use `write_file` to create it from the source at `hermes-behavior/scripts/vault-trace.py` in the Hwacc/skills repo.
-
 ## Auto-Archive to Obsidian Vault
 
 After completing a task, **automatically** write a summary note:
@@ -66,51 +54,12 @@ This keeps all Hermes instances in sync with the latest trigger definitions.
 3. If facts have changed, update the note with current information
 4. List updated notes
 
-### After modifying a skill
-1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py <skill-name>` to find affected notes
-   - `<skills-dir>` = `$LOCALAPPDATA/hermes/skills` (Windows) or `~/.hermes/skills` (macOS/Linux)
-2. Load each affected note
-3. Patch outdated sections with current facts
-4. Update the note's `updated` frontmatter date
-
-### Vault note maintenance after repo work
-
-After working on the Hwacc/skills repository (any file — shell scripts, markdown, configs):
-
-1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py --all` to find ALL affected notes
-   - `<skills-dir>` = `$LOCALAPPDATA/hermes/skills` (Windows) or `~/.hermes/skills` (macOS/Linux)
-   - Notes without `skill_deps` are detected via content-based keyword fallback
-2. Load each affected note
-3. If facts have changed, patch outdated sections
-4. Update the note's `updated` frontmatter date and ensure `skill_deps` is present
-5. This is a checkpoint; do NOT skip it — repo changes often invalidate related vault notes
-
-### Pre-push hook
-
-`scripts/pre-push` runs before `git push`:
-- Scans only skills **changed in this push** (`git diff origin/main..HEAD`)
-- Runs `vault-trace.py <skill> --stale` (warning only, exit 0)
-- Use `vault-trace.py --stale --block` to enforce blocking
-
-Install via `install-all.sh` (`ln -sf scripts/pre-push .git/hooks/pre-push`).
-
-### After push: auto-review stale notes
-
-After `git push`, check the output for `[STALE]` warnings. If any appear:
-
-1. Load each flagged note
-2. **Read the content** — determine if facts actually changed
-3. If content IS outdated → patch with current facts + update `updated`
-4. If content is still correct → only refresh `updated` date (avoid false staleness)
-5. If note is missing `skill_deps` → add it
-6. Do NOT blindly bump dates without reading
-
-### Weekly (every Sunday)
-1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
-2. Load the relevant skill for each note's domain (from `skill_deps` frontmatter)
-3. Verify factual claims against current reality
-4. Update outdated content
-5. List all changes in a summary note at `基础设施/周维护报告.md`
+### After working on the Hwacc/skills repo
+1. Think about which vault notes might be affected by the changes
+2. Search vault for those notes by keyword or `skill_deps`
+3. If facts changed, patch outdated sections and update `updated` date
+4. If note is missing `skill_deps` frontmatter, add it
+5. Do NOT skip — repo changes often invalidate related vault notes
 
 ## Security
 

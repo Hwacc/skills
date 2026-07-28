@@ -23,12 +23,6 @@ echo "── Cursor ──"
 bash "$DIR/compile-cursor-skills.sh"
 
 echo ""
-echo "── Pre-push Hook ──"
-if [ -f "$DIR/scripts/pre-push" ]; then
-    ln -sf "$DIR/scripts/pre-push" "$DIR/.git/hooks/pre-push" 2>/dev/null && echo "  ✅ pre-push hook installed" || echo "  ⚠ symlink failed (Windows? run as admin)"
-fi
-
-echo ""
 echo "── Copilot ──"
 echo "  (手动: 复制 templates/copilot-instructions.md 到项目 .github/ 下)"
 
