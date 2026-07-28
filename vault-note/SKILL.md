@@ -40,6 +40,22 @@ Agent picks the best-matching directory based on note content.
 Skills (SKILL.md) → **English** (reader is AI, more precise, fewer tokens)
 Vault notes (.md in Obsidian) → **中文** (reader is human, user's native language)
 
+## Frontmatter (mandatory)
+
+Every vault note MUST include:
+
+```yaml
+---
+tags: [topic1, topic2]
+skill_deps: [vault-note, ...]   # which skills this note depends on
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+`skill_deps` is required — `vault-trace.py` uses it to find notes affected by skill changes.
+Use `skill_deps: []` only if the note is purely personal and unrelated to any skill.
+
 ## Rules
 
 - `[[Note Name]]` for cross-references

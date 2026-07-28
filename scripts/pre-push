@@ -1,0 +1,15 @@
+#!/bin/bash
+# Pre-push hook — block push if vault notes are outdated
+# Scans ALL skills, exits 1 if any note's updated > 24h old.
+# Install: ln -sf ../../scripts/pre-push .git/hooks/pre-push
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+TRACE="$SCRIPT_DIR/hermes-behavior/scripts/vault-trace.py"
+
+if [ ! -f "$TRACE" ]; then
+    echo "⚠ vault-trace.py not found at $TRACE — skipping check"
+    exit 0
+fi
+
+echo "🔍 Checking vault notes before push..."
+python "$TRACE" --all --stale

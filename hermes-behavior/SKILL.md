@@ -77,12 +77,17 @@ This keeps all Hermes instances in sync with the latest trigger definitions.
 
 After working on the Hwacc/skills repository (any file — shell scripts, markdown, configs):
 
-1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py vault-note skills-tap-workflow hermes-behavior` to find affected notes
+1. Run `python <skills-dir>/hermes-behavior/scripts/vault-trace.py --all` to find ALL affected notes
    - `<skills-dir>` = `$LOCALAPPDATA/hermes/skills` (Windows) or `~/.hermes/skills` (macOS/Linux)
+   - Notes without `skill_deps` are detected via content-based keyword fallback
 2. Load each affected note
 3. If facts have changed, patch outdated sections
-4. Update the note's `updated` frontmatter date
+4. Update the note's `updated` frontmatter date and ensure `skill_deps` is present
 5. This is a checkpoint; do NOT skip it — repo changes often invalidate related vault notes
+
+### Pre-push hook
+
+`scripts/pre-push` runs `vault-trace.py --all --stale` before `git push`. If any vault note is >24h outdated, the push is blocked. Install via `install-all.sh`.
 
 ### Weekly (every Sunday)
 1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
