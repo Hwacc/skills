@@ -4,8 +4,9 @@
 
 ### On session start
 1. Read `MOC.md` — scan for ⚠️ markers
-2. If stale notes found, tell the user: "N 篇笔记需要审查，要我看看吗？"
-3. Wait for user confirmation before reviewing
+2. Ignore stale notes about ops metrics, infrastructure status, or server configs
+3. Only flag: pitfalls, architecture decisions, technical research
+4. If relevant stale notes found, tell the user: "N 篇笔记需要审查，要我看看吗？"
 
 ### Before acting
 1. Search the vault for relevant past notes (`search_files` or read MOC)
