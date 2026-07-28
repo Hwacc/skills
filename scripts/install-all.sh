@@ -20,6 +20,7 @@ bash "$DIR/compile-claude-md.sh"
 
 echo ""
 echo "── Cursor ──"
+bash "$DIR/compile-cursor-rules.sh"
 bash "$DIR/compile-cursor-skills.sh"
 
 echo ""
