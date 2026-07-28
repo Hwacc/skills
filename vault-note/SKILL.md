@@ -22,9 +22,12 @@ Resolve the env var before passing to file tools — they don't expand shell var
 
 ## Operations
 
-- **Read**: `read_file` with full path
+**Always start with the MOC index.** Before reading or searching individual notes, read `知识库 MOC.md` first. It contains a curated index of all vault notes organized by topic — faster than full-text search.
+
+- **Read MOC**: `read_file` with vault path + `/知识库 MOC.md`
+- **Read note**: `read_file` with full path (from MOC wikilinks)
 - **Search**: `search_files` with `target: "content"` or `target: "files"` + `*.md` glob
-- **Write**: `write_file` with full path
+- **Write**: `write_file` with full path. After writing, update MOC.
 
 ## Directory Convention
 
