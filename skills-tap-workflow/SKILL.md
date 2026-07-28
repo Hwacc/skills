@@ -5,6 +5,9 @@ triggers:
   - skills tap
   - tap workflow
   - "更新 skill 仓库"
+  - "更新 skills"
+  - "更新我的 skills"
+  - "更新我的skill"
   - hermes-soul-merge
 ---
 
@@ -65,6 +68,20 @@ constructing install path as `skills-sh/Hwacc/skills/<name>`. Zero-blocking.
 ```
 Modify GitHub → git push → bash hermes-soul-merge.sh → local SOUL.md updated
 ```
+
+## Update Skills Workflow
+
+When the user says "更新下我的 skills" or similar:
+
+1. **Pull the repo**: `cd C:\my-workspace\Hwacc-skills && git pull origin main`
+2. **Run install-all**: `bash scripts/install-all.sh`
+3. **Verify all agents**:
+   - Hermes: check `hermes skills list` shows 6 tap skills (SAFE verdict)
+   - Claude Code: check `~/.claude/CLAUDE.md` updated and skills present
+   - Cursor: check `~/.cursor/skills-cursor/` has dev-conventions + vault-note
+
+Do NOT just run `hermes skills update` alone — that only covers Hermes.
+The repo is at `C:\my-workspace\Hwacc-skills` (Windows).
 
 ## New Machine Bootstrap
 
