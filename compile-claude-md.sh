@@ -11,15 +11,9 @@ REPO="https://api.github.com/repos/Hwacc/skills/contents/CLAUDE.md"
 DL_TMP="./_claude_md_dl.md"
 DL_JSON="./_claude_md_raw.json"
 
-# 跨平台路径检测
-if [ -n "$LOCALAPPDATA" ]; then
-    CLAUDE_DIR="${LOCALAPPDATA}/claude"
-elif [ -d "$HOME/.claude" ]; then
-    CLAUDE_DIR="$HOME/.claude"
-else
-    mkdir -p "$HOME/.claude"
-    CLAUDE_DIR="$HOME/.claude"
-fi
+# 跨平台路径检测 — Claude Code always uses ~/.claude
+CLAUDE_DIR="$HOME/.claude"
+mkdir -p "$CLAUDE_DIR"
 
 LOCAL="${CLAUDE_DIR}/CLAUDE.md"
 SKILLS_DIR="${CLAUDE_DIR}/skills"
@@ -45,16 +39,14 @@ else
     curl -fsSL -H "Accept: application/vnd.github.v3+json" "$REPO" -o "$DL_JSON"
 fi
 # 从 JSON 中提取 base64 内容并解码
-python3 -c "
+python -c "
 import json, base64, sys
 with open('$DL_JSON') as f:
     data = json.load(f)
 content = base64.b64decode(data['content']).decode('utf-8')
 with open('$DL_TMP', 'w') as f:
     f.write(content)
-" 2>/dev/null || {
-    # fallback: python3 不可用时用 python
-    python -c "
+" 2>/dev/null || python3 -c "
 import json, base64
 with open('$DL_JSON') as f:
     data = json.load(f)
@@ -62,7 +54,6 @@ content = base64.b64decode(data['content']).decode('utf-8')
 with open('$DL_TMP', 'w') as f:
     f.write(content)
 "
-}
 echo "已下载: CLAUDE.md ($(wc -l < "$DL_TMP") lines)"
 
 # 3. 从 CLAUDE.md 中解析需要的 skills 列表
