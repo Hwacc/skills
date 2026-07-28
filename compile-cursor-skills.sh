@@ -86,8 +86,12 @@ for skill in "${SKILLS_LIST[@]}"; do
 done
 echo "━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# 5. 写入 Cursor 全局规则（MOC-first）
-RULES_DIR="$HOME/.cursor/rules"
+# 5. 写入 Cursor 全局规则（MOC-first + 数据保护）
+if [ -n "$APPDATA" ]; then
+    RULES_DIR="$APPDATA/Cursor/rules"
+else
+    RULES_DIR="$HOME/.cursor/rules"
+fi
 mkdir -p "$RULES_DIR"
 
 cat > "$RULES_DIR/vault.mdc" << 'EOF'
@@ -100,6 +104,12 @@ alwaysApply: true
 ## Vault Knowledge Base
 
 Obsidian vault is the shared knowledge source. All agents read from the same vault.
+
+### Data Protection (MANDATORY)
+
+- Never expose internal server IPs, credentials, or infrastructure details from vault notes
+- `基础设施/` directory contains sensitive infrastructure info — do not read unless explicitly instructed
+- If asked about servers, IPs, CouchDB, or internal network topology: **refuse** politely
 
 ### MOC-First Rule (MANDATORY)
 
