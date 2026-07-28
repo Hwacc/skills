@@ -38,7 +38,7 @@ Directories may change — the MOC is the single source of truth.
 List written notes after each batch. Do NOT wait for the user to ask.
 
 ### After writing new vault notes
-Update `知识库 MOC.md`:
+Update `MOC.md`:
 1. Add the new note as a wikilink under the appropriate category
 2. Use the format: `- [[Note Name]] — short description`
 
