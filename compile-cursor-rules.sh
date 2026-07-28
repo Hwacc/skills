@@ -6,7 +6,12 @@ set -e
 
 DIR="$(pwd)"
 SRC="$DIR/cursor-rules.md"
-DST="$HOME/.cursorrules"
+# Cursor 全局规则目标路径
+if [ -n "$APPDATA" ]; then
+    DST="$APPDATA/Cursor/.cursorrules"
+else
+    DST="$HOME/.cursorrules"
+fi
 
 echo "=== Cursor 全局规则 ==="
 

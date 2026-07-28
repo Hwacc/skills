@@ -7,11 +7,19 @@
 
 set -e
 
+# Cross-platform Python
+_python() {
+    python3 "$@" 2>/dev/null || python "$@"
+}
+
 REPO="https://api.github.com/repos/Hwacc/skills/contents/CLAUDE.md"
 DL_TMP="./_claude_md_dl.md"
 DL_JSON="./_claude_md_raw.json"
 
 # 跨平台路径检测 — Claude Code always uses ~/.claude
+if [ -z "$HOME" ]; then
+    HOME="$USERPROFILE"
+fi
 CLAUDE_DIR="$HOME/.claude"
 mkdir -p "$CLAUDE_DIR"
 
@@ -39,14 +47,14 @@ else
     curl -fsSL -H "Accept: application/vnd.github.v3+json" "$REPO" -o "$DL_JSON"
 fi
 # 从 JSON 中提取 base64 内容并解码
-python -c "
+_python -c "
 import json, base64, sys
 with open('$DL_JSON') as f:
     data = json.load(f)
 content = base64.b64decode(data['content']).decode('utf-8')
 with open('$DL_TMP', 'w') as f:
     f.write(content)
-" 2>/dev/null || python3 -c "
+" 2>/dev/null || _python -c "
 import json, base64
 with open('$DL_JSON') as f:
     data = json.load(f)

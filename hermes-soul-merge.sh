@@ -7,6 +7,11 @@ set -e
 REPO="https://raw.githubusercontent.com/Hwacc/skills/main/HERMES-SOUL.md?v=$(date +%s)"
 DL_TMP="./_hermes_soul_dl.md"
 
+# Cross-platform Python
+_python() {
+    python3 "$@" 2>/dev/null || python "$@"
+}
+
 # 跨平台 SOUL.md 路径检测
 if [ -n "$LOCALAPPDATA" ]; then
     HERMES_DIR="${LOCALAPPDATA}/hermes"
@@ -25,7 +30,7 @@ LOCAL_MARKER='<!-- LOCAL: add machine-specific rules below this line -->'
 echo "=== Hermes SOUL Merge ==="
 echo "Hermes dir: $HERMES_DIR"
 
-# 1. 备份本地唯一规则
+# 1. 备份本地规则
 if [ -f "$LOCAL" ]; then
     awk -v marker="$LOCAL_MARKER" '
         $0 == marker {found=1; next}
@@ -56,10 +61,8 @@ done
 if [ -n "$SKILLS_DIR" ]; then
     echo "发现 skills 仓库: $SKILLS_DIR"
 
-    # Generate trigger table from SKILL.md frontmatter
-    TABLE=$(python3 << PYEOF
+    TABLE=$(_python -c "
 import os, glob
-
 rows = ''
 for md in sorted(glob.glob('$SKILLS_DIR/*/SKILL.md')):
     name = os.path.basename(os.path.dirname(md))
@@ -73,21 +76,19 @@ for md in sorted(glob.glob('$SKILLS_DIR/*/SKILL.md')):
             continue
         if in_triggers:
             if line.startswith('  - '):
-                triggers.append(line.strip()[2:].strip('"'))
+                triggers.append(line.strip()[2:].strip('\"'))
             elif line.strip() and not line.startswith(' '):
                 break
     trigger_str = ', '.join(triggers) if triggers else '(no triggers)'
     rows += '| {} | {} |\n'.format(name, trigger_str)
 print(rows.strip())
-PYEOF
-)
+")
 
     if [ -n "$TABLE" ]; then
-        # Insert trigger table after the header line
-        python3 << PYEOF
+        _python -c "
 import re
 content = open('$DL_TMP').read()
-table = """$TABLE"""
+table = '''$TABLE'''
 new_table = '| Skill | Triggers |\n|---|---|\n' + table
 content = re.sub(
     r'\| Skill \| Triggers \|[\s\S]*?(?=\n## |\n<!-- |\Z)',
@@ -95,12 +96,12 @@ content = re.sub(
     content, count=1
 )
 open('$DL_TMP', 'w').write(content)
-PYEOF
+"
         echo "触发表已更新"
     fi
 fi
 
-# 4. 合并: 基础版 + 本地规则
+# 4. 合并
 cat "$DL_TMP" > "$LOCAL"
 if [ -f "$LOCAL_KEEP" ] && [ -s "$LOCAL_KEEP" ]; then
     echo "" >> "$LOCAL"
