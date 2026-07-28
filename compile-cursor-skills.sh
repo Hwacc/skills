@@ -8,12 +8,14 @@ DIR="$(pwd)"
 
 # Find skills clone (cross-machine)
 _find_skills_repo() {
-    for d in "$(pwd)" "$HOME/skills" "$HOME/workspace/skills"; do
-        if [ -d "$d/vault-note" ] && [ -f "$d/vault-note/SKILL.md" ]; then
-            echo "$d"
-            return
-        fi
+    CACHE="$HOME/.hermes/.skills-repo-path"
+    [ -f "$CACHE" ] && [ -d "$(cat "$CACHE")" ] && { cat "$CACHE"; return; }
+    if git remote get-url origin 2>/dev/null | grep -q "Hwacc/skills"; then echo "$(pwd)"; return; fi
+    for gitdir in $(find "$HOME" -maxdepth 5 -name ".git" -type d 2>/dev/null); do
+        dir="$(dirname "$gitdir")"
+        git -C "$dir" remote get-url origin 2>/dev/null | grep -q "Hwacc/skills" && { echo "$dir" | tee "$CACHE"; return; }
     done
+    [ -d "$(pwd)/vault-note" ] && echo "$(pwd)" && return
     echo "$(pwd)"
 }
 DIR="$(_find_skills_repo)"
