@@ -137,6 +137,8 @@ if __name__ == "__main__":
                 print(f"  ⚠ content match (no skill_deps):")
                 for note, updated in missing:
                     print(f"    {note}  (updated: {updated})")
+            if not hits and not missing:
+                print(f"No notes depend on '{skill}'")
 
     if check_stale and stale_found:
         print("\n⚠ Some vault notes are outdated. Update them before pushing.")
