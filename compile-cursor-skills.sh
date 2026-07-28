@@ -5,6 +5,19 @@
 set -e
 
 DIR="$(pwd)"
+
+# Find skills clone (cross-machine)
+_find_skills_repo() {
+    for d in "$(pwd)" "$HOME/skills" "$HOME/workspace/skills"; do
+        if [ -d "$d/vault-note" ] && [ -f "$d/vault-note/SKILL.md" ]; then
+            echo "$d"
+            return
+        fi
+    done
+    echo "$(pwd)"
+}
+DIR="$(_find_skills_repo)"
+
 CLAUDE_MD="$HOME/.claude/CLAUDE.md"
 AGENTS_DIR="$HOME/.agents/skills"
 CURSOR_DIR="$HOME/.cursor/skills-cursor"

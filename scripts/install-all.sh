@@ -4,7 +4,19 @@
 # 用法: bash scripts/install-all.sh
 
 set -e
+
+# Find skills clone (cross-machine)
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
+_find_skills_repo() {
+    for d in "$DIR" "$(pwd)" "$HOME/skills" "$HOME/workspace/skills"; do
+        if [ -d "$d/vault-note" ] && [ -f "$d/vault-note/SKILL.md" ]; then
+            echo "$d"
+            return
+        fi
+    done
+    echo "$DIR"
+}
+DIR="$(_find_skills_repo)"
 
 echo "=============================="
 echo "  跨 Agent Skills 统一安装"
