@@ -28,6 +28,15 @@ For any non-trivial task — especially system config, infrastructure, debugging
 - Prefer Obsidian vault for persistent knowledge, use memory only for preferences.
 - After completing complex tasks, write a summary note to the vault.
 
+### After modifying Hwacc/skills repo
+
+When you change scripts, configs, SKILL.md, or CLAUDE.md in the Hwacc/skills repo:
+
+1. Search vault for notes with matching `skill_deps` or topic keywords
+2. Load each affected note — if facts changed, patch outdated sections
+3. Update the `updated` frontmatter date
+4. Do NOT skip — even "just script changes" can invalidate vault notes
+
 ## Code Style
 
 - Use descriptive variable names over comments where possible.
