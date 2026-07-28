@@ -94,6 +94,17 @@ After working on the Hwacc/skills repository (any file — shell scripts, markdo
 
 Install via `install-all.sh` (`ln -sf scripts/pre-push .git/hooks/pre-push`).
 
+### After push: auto-review stale notes
+
+After `git push`, check the output for `[STALE]` warnings. If any appear:
+
+1. Load each flagged note
+2. **Read the content** — determine if facts actually changed
+3. If content IS outdated → patch with current facts + update `updated`
+4. If content is still correct → only refresh `updated` date (avoid false staleness)
+5. If note is missing `skill_deps` → add it
+6. Do NOT blindly bump dates without reading
+
 ### Weekly (every Sunday)
 1. Scan vault notes with no `updated` frontmatter or `updated` > 30 days ago
 2. Load the relevant skill for each note's domain (from `skill_deps` frontmatter)
