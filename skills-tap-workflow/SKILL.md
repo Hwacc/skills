@@ -4,18 +4,10 @@ description: Full lifecycle of the Hwacc/skills personal tap — trigger→insta
 triggers:
   - skills tap
   - tap workflow
-  - "更新 skill"
-  - "更新 skills"
-  - "更新我的 skill"
   - "更新我的 skills"
-  - "更新技能"
-  - "更新我的技能"
+  - "更新我的 skill"
   - "更新 skill 仓库"
   - "更新技能仓库"
-  - "同步 skill"
-  - "同步 skills"
-  - "拉取 skill"
-  - "拉取 skills"
   - hermes-soul-merge
 ---
 
