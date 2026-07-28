@@ -81,8 +81,7 @@ Modify GitHub → git push → bash hermes-soul-merge.sh → local SOUL.md updat
 
 When the user says "更新下我的 skills" or similar:
 
-1. **Pull the repo**: `cd <repo-dir> && git pull origin main`
-   - `<repo-dir>` = `~/my-workspace/Hwacc-skills` (cross-platform; adjust if cloned elsewhere)
+1. **Pull the repo**: `cd` to the local clone of `Hwacc/skills`, then `git pull origin main`
 2. **Run install-all**: `bash scripts/install-all.sh`
 3. **Verify all agents**:
    - Hermes: check `hermes skills list` shows 6 tap skills (SAFE verdict)
