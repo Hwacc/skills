@@ -48,13 +48,24 @@ Every vault note MUST include:
 ---
 tags: [topic1, topic2]
 skill_deps: [vault-note, ...]   # which skills this note depends on
+stale_after: YYYY-MM-DD         # review after this date (set automatically)
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
 ```
 
-`skill_deps` is required — `vault-trace.py` uses it to find notes affected by skill changes.
-Use `skill_deps: []` only if the note is purely personal and unrelated to any skill.
+### stale_after rules
+
+Agent sets `stale_after` based on content type:
+
+| Content type | stale_after | Rationale |
+|-------------|-------------|-----------|
+| Metrics, status, doc counts (CouchDB, etc.) | +2 weeks | Ops data changes fast |
+| Architecture design, server config | +6 months | Infrastructure is stable |
+| Bug fix, pitfall record | omit | Historical record, never "expires" |
+| Tech research, solution analysis | +1 month | Tech stacks evolve |
+
+After writing a note, update MOC with `python index.py`.
 
 ## Rules
 

@@ -48,6 +48,13 @@ This keeps all Hermes instances in sync with the latest trigger definitions.
 
 ## Vault Maintenance
 
+### On session start
+1. Read `MOC.md` — scan for ⚠️ markers
+2. If stale notes found, tell the user: "N 篇笔记需要审查，要我看看吗？"
+3. Do NOT auto-review — wait for user confirmation
+4. If user says yes, review one by one: load note → verify facts → update or refresh
+5. After reviewing, run `python index.py` to regenerate MOC
+
 ### After major discussions or decisions
 1. Identify the topic domain (e.g., CouchDB, skills, servers)
 2. Search vault for notes mentioning related keywords
