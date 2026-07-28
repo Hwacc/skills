@@ -1,16 +1,28 @@
 # Claude Code Global Knowledge
 
-## Vault Workflow (mandatory)
+## Vault Workflow
 
-**Trigger** — run this workflow when a task involves ANY of: system config, infrastructure, debugging, architecture decisions, or 3rd-party integration — OR is expected to take more than ~15 min. Skip only for trivial one-off edits.
+### On session start
+1. Read `MOC.md` — scan for ⚠️ markers
+2. If stale notes found, tell the user: "N 篇笔记需要审查，要我看看吗？"
+3. Wait for user confirmation before reviewing
 
-1. **Search before acting** — search the vault for relevant past notes BEFORE writing code
-2. **Act with context** — apply existing knowledge, avoid repeating past mistakes
-3. **Write after completing** — save a summary to `基础设施/`, `踩坑记录/`, `技术笔记/`, or `项目/`
+### Before acting
+1. Search the vault for relevant past notes (`search_files` or read MOC)
+2. Apply existing knowledge, avoid repeating past mistakes
 
-Do NOT skip step 1 or step 3.
+### Auto-Archive (filtered)
 
-> This mirrors Hermes's `hermes-behavior` auto-archive pattern. The vault is your long-term memory across sessions and agents.
+Only archive when the result has cross-session reuse value:
+
+| Archive | Skip |
+|---------|------|
+| Bug root cause analysis | Fixing the bug itself |
+| Architecture decisions (why this approach) | Routine code refactoring |
+| Pitfalls (config traps, counter-intuitive behavior) | Writing unit tests |
+| New tool or process introduction | One-line CSS/typo fixes |
+
+Do NOT archive infrastructure changes, operational records, or regular code changes.
 
 ### Vault note maintenance after repo work
 
