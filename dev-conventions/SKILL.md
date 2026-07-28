@@ -23,6 +23,18 @@ For any non-trivial task — especially system config, infrastructure, debugging
 - Public services must use HTTPS + multi-layer authentication.
 - Do not expose raw SMB/DB ports to the internet.
 
+### Company Data Protection
+
+**Vault notes MUST NOT contain company project sensitive information**, including but not limited to:
+
+- Business-related source code or code snippets
+- Access keys, API keys, secrets, or passwords (use `***` placeholder)
+- Internal business requirements or unreleased feature specifications
+- Customer data, internal URLs, or proprietary configuration values
+
+General architecture patterns, infrastructure design, and personal tooling are fine.
+When in doubt, **do not write it** — prefer a generic description over a specific one.
+
 ## Knowledge Management
 
 - Prefer Obsidian vault for persistent knowledge, use memory only for preferences.

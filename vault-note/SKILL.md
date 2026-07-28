@@ -41,5 +41,7 @@ Resolve the env var before passing to file tools — they don't expand shell var
 Skills (SKILL.md) → **English** (reader is AI, more precise, fewer tokens)
 Vault notes (.md in Obsidian) → **中文** (reader is human, user's native language)
 
+## Rules
+
 - `[[Note Name]]` for cross-references
-- Never include passwords/tokens/keys — use `***`
+- **Never include company sensitive info** — no business code, access keys, secrets, unreleased requirements, internal URLs, or proprietary configs. Use `***` placeholder or generic descriptions.

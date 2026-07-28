@@ -35,7 +35,12 @@ After working on the Hwacc/skills repository (any file: scripts, markdown, shell
 <!-- SKILLS:dev-conventions -->
 
 ## Security
+
 - Never write passwords, tokens, or API keys in any file. Use environment variables.
 - Public services must use HTTPS + multi-layer authentication.
+
+### Company Data Protection
+
+Vault notes MUST NOT contain company project sensitive information: business code, access keys, secrets, unreleased requirements, internal URLs, or proprietary configs. When in doubt, use a generic description or the `***` placeholder.
 
 <!-- LOCAL: add machine-specific rules below this line -->
