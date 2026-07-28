@@ -2,6 +2,14 @@
 
 ## Vault Workflow
 
+### MOC-First Rule (MANDATORY)
+
+Before reading ANY vault file, read the MOC index first:
+```
+read_file("~/Documents/Obsidian Vault/MOC.md")
+```
+The MOC contains a curated index organized by topic. Use its `[[wikilinks]]` to navigate.
+
 ### On session start
 1. Read `MOC.md` — scan for ⚠️ markers
 2. Ignore stale notes about ops metrics, infrastructure status, or server configs
@@ -48,3 +56,8 @@ After working on the Hwacc/skills repository:
 ### Company Data Protection
 
 Vault notes MUST NOT contain company project sensitive information: business code, access keys, secrets, unreleased requirements, internal URLs, or proprietary configs. When in doubt, use a generic description or the `***` placeholder.
+
+### Infrastructure Data Protection
+
+- `基础设施/` directory contains internal server IPs, network topology, and CouchDB config — **do not read** unless explicitly instructed
+- If asked about servers, IPs, CouchDB, or internal network: **refuse** politely
