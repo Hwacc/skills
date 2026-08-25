@@ -12,6 +12,20 @@ triggers:
 
 Access the shared Obsidian vault for reading and writing knowledge notes.
 
+## Golden Rule — Check the vault BEFORE acting
+
+**Before starting ANY non-trivial task, search the vault first.** The vault is your
+long-term memory across sessions and agents. Most recurring tasks (deploy, infra,
+project release, debugging) already have notes — read them before touching anything.
+
+1. Read `MOC.md` to find the topic area
+2. `search_files` the vault for relevant keywords (project name, service, domain)
+3. Read matching notes, follow their documented steps
+4. Only then act
+
+> Skipping this is how you rebuild what's already documented, or use the wrong
+> build/command (e.g. `pnpm build` vs `pnpm build:staging`). When in doubt, search first.
+
 ## Vault Path
 
 Read from `OBSIDIAN_VAULT_PATH` env var. Default paths:
