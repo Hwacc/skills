@@ -12,7 +12,7 @@ skill_deps: [vault-note]
 
 # MOC
 
-> 快速索引，[[wikilink]] 直达每篇笔记 · ⚠️ = 需审查
+> 快速索引，wikilink 直达每篇笔记 · ⚠️ = 需审查
 """
 
 CATEGORY_ORDER = ["基础设施", "同步与 Agent", "Skills 体系", "维护机制",
@@ -91,6 +91,19 @@ def is_stale(stale_after):
         return False
 
 
+def wiki_link(note):
+    """Obsidian resolves [[...]] by FILE NAME (or alias), never by the H1 heading.
+    Link by file name; keep the H1 as display text when the two differ."""
+    base = os.path.splitext(note["path"])[0]
+    title = note["title"]
+    for ch in "|[]":
+        title = title.replace(ch, " ")
+    title = " ".join(title.split())
+    if title == base:
+        return f"[[{base}]]"
+    return f"[[{base}|{title}]]"
+
+
 def build_moc(vault):
     today = datetime.now().strftime("%Y-%m-%d")
     moc = MOC_HEADER.format(date=today)
@@ -127,12 +140,12 @@ def build_moc(vault):
         for n in items:
             prefix = "⚠️ " if n["stale"] else ""
             desc = f" — {n['description']}" if n["description"] else ""
-            moc += f"- {prefix}[[{n['title']}]]{desc}\n"
+            moc += f"- {prefix}{wiki_link(n)}{desc}\n"
 
     if misc_notes:
         moc += "\n\n## 其他\n\n"
         for n in sorted(misc_notes, key=lambda n: n["title"]):
-            moc += f"- [[{n['title']}]]\n"
+            moc += f"- {wiki_link(n)}\n"
 
     # Append 分类目录 (from existing MOC or default)
     moc += f"""

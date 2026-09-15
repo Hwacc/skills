@@ -81,7 +81,9 @@ Agent sets `stale_after` based on content type:
 
 After writing a note, update MOC with `python <repo>/hermes-behavior/scripts/index.py` (script is in the Hwacc/skills repo clone).
 
+**MOC links must use the file name.** Obsidian resolves `[[...]]` by file name (or alias) — never by the H1 heading — so `index.py` links with the file name and keeps the H1 as display text (`[[file-name|H1 title]]`). Never hand-write a MOC link from a note's H1, and re-run `index.py` after renaming a note: a title-only link shows as an unresolved link and silently creates an empty note at that name, which LiveSync then propagates to every device.
+
 ## Rules
 
-- `[[Note Name]]` for cross-references
+- `[[Note Name]]` for cross-references — the target is a **file name** (or alias), never an H1 title
 - **Never include company sensitive info** — no business code, access keys, secrets, unreleased requirements, internal URLs, or proprietary configs. Use `***` placeholder or generic descriptions.
