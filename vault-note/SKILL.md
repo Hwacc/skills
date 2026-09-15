@@ -62,7 +62,7 @@ Every vault note MUST include:
 ---
 tags: [topic1, topic2]
 skill_deps: [vault-note, ...]   # which skills this note depends on
-stale_after: YYYY-MM-DD         # review after this date (set automatically)
+stale_after: YYYY-MM-DD         # review after this date = updated + type period (below)
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 ---
@@ -70,7 +70,7 @@ updated: YYYY-MM-DD
 
 ### stale_after rules
 
-Agent sets `stale_after` based on content type:
+Agent sets `stale_after` = **the note's `updated` date + the period below**:
 
 | Content type | stale_after | Rationale |
 |-------------|-------------|-----------|
