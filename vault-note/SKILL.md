@@ -83,6 +83,8 @@ After writing a note, update MOC with `python <repo>/hermes-behavior/scripts/ind
 
 **MOC links must use the file name.** Obsidian resolves `[[...]]` by file name (or alias) — never by the H1 heading — so `index.py` links with the file name and keeps the H1 as display text (`[[file-name|H1 title]]`). Never hand-write a MOC link from a note's H1, and re-run `index.py` after renaming a note: a title-only link shows as an unresolved link and silently creates an empty note at that name, which LiveSync then propagates to every device.
 
+**MOC is generated, and it syncs.** Re-run `index.py` on the machine whose frontmatter you changed — a MOC regenerated elsewhere goes stale (⚠️ markers disagreeing with the notes, missing entries) and syncs back as if it were current. The vault is not under `git`: copy `MOC.md` aside and diff before/after, because regeneration rewrites the whole file.
+
 ## Rules
 
 - `[[Note Name]]` for cross-references — the target is a **file name** (or alias), never an H1 title
